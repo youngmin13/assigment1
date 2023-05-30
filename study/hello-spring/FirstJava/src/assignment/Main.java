@@ -76,37 +76,38 @@ public class Main {
             menuMain[i] = new Menu(mainName.get(i), mainDesc.get(i));
         }
 
-        // 버거 5개 초기화
+        // 버거 5개 선언 및 초기화
         Food[] menuBurger = new Food[5];
         for (int i = 0; i < 5; i++) {
             menuBurger[i] = new Food(burgerName.get(i), burgerDesc.get(i), burgerPrice.get(i));
         }
 
-        // 아이스크림 5개 초기화
+        // 아이스크림 5개 선언 및 초기화
         Food[] menuIce = new Food[5];
         for (int i = 0; i < 5; i++) {
             menuIce[i] = new Food(iceName.get(i), iceDesc.get(i), icePrice.get(i));
         }
 
-        // 음료 5개 초기화
+        // 음료 5개 선언 및 초기화
         Food[] menuDrink = new Food[5];
         for (int i = 0; i < 5; i++) {
             menuDrink[i] = new Food(drinkName.get(i), drinkDesc.get(i), drinkPrice.get(i));
         }
 
-        //맥주 5개 초기화
+        //맥주 5개 선언 및 초기화
         Food[] menuBeer = new Food[5];
         for (int i = 0; i < 5; i++) {
             menuBeer[i] = new Food(beerName.get(i), beerDesc.get(i), beerPrice.get(i));
         }
 
+        // 장바구니
         Order basket = new Order();
 
-        // 0번 옵션
+        // 0번 옵션을 위한 변수
         double totalCharge = 0.0;
         Map<String, Double> totalFood = new HashMap<>();
 
-        // 반복문
+        // 반복문 -> 나가는 기능이 없다. (키오스크는 원래 나가는게 없으니 괜춘할듯)
         while(true) {
             // 메뉴 출력
             for (int i = 0; i < menuMain.length; i++)
@@ -122,8 +123,11 @@ public class Main {
             System.out.println("아래 상품메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
             // 확인 or 취소
             int flag;
+            // single 인지 double 인지
             int option;
+            // 더블일 때 가격 더하기 위한 변수
             double plusDouble;
+            // 더블일 때를 위한 Food 객체
             Food foodChange;
             // 옵션 선택 후 실행
             switch (optionChoice) {
@@ -144,23 +148,23 @@ public class Main {
                     option = sc.nextInt();
                     // 임시로 사용할 새로운 Food 객체 하나 생성
                     foodChange = new Food(burgerName.get(choice - 1), burgerDesc.get(choice - 1), burgerPrice.get(choice - 1));
-                    if (option == 1) {
-                        foodChange.setFoodName(burgerName.get(choice - 1) + "(Single)");
-                    }
-                    else if (option == 2) {
+                    if (option == 2) {
                         foodChange.setFoodName(burgerName.get(choice - 1) + "(Double)");
                         foodChange.setFoodPrice(burgerPrice.get(choice - 1) + plusDouble);
                     }
+                    // 장바구니에 추가할지
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
                     System.out.println("1. 확인        2. 취소");
                     flag = sc.nextInt();
                     if (flag == 1) {
                         if (option == 1) {
+                            // 기본 일때
                             basket.addFood(menuBurger[choice - 1]);
                             System.out.print(menuBurger[choice - 1].getFoodName());
                             System.out.println("가 장바구니에 추가되었습니다.");
                         }
                         else if (option == 2) {
+                            // 더블 같은 옵션이 추가 되었을 때
                             basket.addFood(foodChange);
                             System.out.print(foodChange.getFoodName());
                             System.out.println("가 장바구니에 추가되었습니다.");
@@ -187,10 +191,7 @@ public class Main {
                     System.out.printf("1. Single(W %.1f)        2. Double(W %.1f)\n",  menuIce[choice - 1].getFoodPrice(),  menuIce[choice - 1].getFoodPrice() + plusDouble);
                     option = sc.nextInt();
                     foodChange = new Food(iceName.get(choice - 1), iceDesc.get(choice - 1), icePrice.get(choice - 1));
-                    if (option == 1) {
-                        foodChange.setFoodName(iceName.get(choice - 1) + "(Single)");
-                    }
-                    else if (option == 2) {
+                    if (option == 2) {
                         foodChange.setFoodName(iceName.get(choice - 1) + "(Double)");
                         foodChange.setFoodPrice(icePrice.get(choice - 1) + plusDouble);
                     }
@@ -227,14 +228,11 @@ public class Main {
                     // 싱글인지 더블인지
                     System.out.println("위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
                     plusDouble = 0.9;
-                    System.out.printf("1. Single(W %.1f)        2. Double(W %.1f)\n",  menuDrink[choice - 1].getFoodPrice(),  menuDrink[choice - 1].getFoodPrice() + plusDouble);
+                    System.out.printf("1. Original(W %.1f)        2. Large(W %.1f)\n",  menuDrink[choice - 1].getFoodPrice(),  menuDrink[choice - 1].getFoodPrice() + plusDouble);
                     option = sc.nextInt();
                     foodChange = new Food(drinkName.get(choice - 1), drinkDesc.get(choice - 1), drinkPrice.get(choice - 1));
-                    if (option == 1) {
-                        foodChange.setFoodName(drinkName.get(choice - 1) + "(Single)");
-                    }
-                    else if (option == 2) {
-                        foodChange.setFoodName(drinkName.get(choice - 1) + "(Double)");
+                    if (option == 2) {
+                        foodChange.setFoodName(drinkName.get(choice - 1) + "(Large)");
                         foodChange.setFoodPrice(drinkPrice.get(choice - 1) + plusDouble);
                     }
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -270,14 +268,11 @@ public class Main {
                     // 싱글인지 더블인지
                     System.out.println("위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
                     plusDouble = 2.9;
-                    System.out.printf("1. Single(W %.1f)        2. Double(W %.1f)\n",  menuBeer[choice - 1].getFoodPrice(),  menuBeer[choice - 1].getFoodPrice() + plusDouble);
+                    System.out.printf("1. Original(W %.1f)        2. Large(W %.1f)\n",  menuBeer[choice - 1].getFoodPrice(),  menuBeer[choice - 1].getFoodPrice() + plusDouble);
                     option = sc.nextInt();
                     foodChange = new Food(beerName.get(choice - 1), beerDesc.get(choice - 1), beerPrice.get(choice - 1));
-                    if (option == 1) {
-                        foodChange.setFoodName(beerName.get(choice - 1) + "(Single)");
-                    }
-                    else if (option == 2) {
-                        foodChange.setFoodName(beerName.get(choice - 1) + "(Double)");
+                    if (option == 2) {
+                        foodChange.setFoodName(beerName.get(choice - 1) + "(Large)");
                         foodChange.setFoodPrice(beerPrice.get(choice - 1) + plusDouble);
                     }
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
