@@ -105,7 +105,8 @@ public class Main {
 
         // 0번 옵션을 위한 변수
         double totalCharge = 0.0;
-        Map<String, Double> totalFood = new HashMap<>();
+        ArrayList<String> totalFoodName = new ArrayList<>();
+        ArrayList<Double> totalFoodPrice = new ArrayList<>();
 
         // 반복문 -> 나가는 기능이 없다. (키오스크는 원래 나가는게 없으니 괜춘할듯)
         while(true) {
@@ -315,7 +316,8 @@ public class Main {
                         basket.upWaitNumber();
                         // 총 판매 메뉴
                         for (int i = 0; i < basket.getFood().size(); i++) {
-                            totalFood.put(basket.getFood().get(i).getFoodName(), basket.getFood().get(i).getFoodPrice());
+                            totalFoodName.add(basket.getFood().get(i).getFoodName());
+                            totalFoodPrice.add(basket.getFood().get(i).getFoodPrice());
                         }
                         // 장바구니 비우기
                         basket.orderCancel();
@@ -342,8 +344,8 @@ public class Main {
                     // 총 판매 상품
                     System.out.println("[ 총 판매상품 목록 현황 ]");
                     System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
-                    for (String key : totalFood.keySet()) {
-                        System.out.printf("- %-18s" + " | W %.1f", key, totalFood.get(key));
+                    for (int i = 0; i < totalFoodName.size(); i++) {
+                        System.out.printf("- %-18s" + " | W %.1f", totalFoodName.get(i), totalFoodPrice.get(i));
                         System.out.println();
                     }
                     //총 판매 금액
