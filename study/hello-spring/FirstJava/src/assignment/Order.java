@@ -1,14 +1,8 @@
 package assignment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Order {
-
-    public void setWaitNumber(int waitNumber) {
-        this.waitNumber = waitNumber;
-    }
 
     private ArrayList<Food> food;
     private int waitNumber;
@@ -18,12 +12,16 @@ public class Order {
         this.waitNumber = 1;
     }
 
-    public void addFood (Food food) {
-        this.food.add(food);
+    public void addFood (Food product) {
+        this.food.add(product);
     }
 
     public int getWaitNumber() {
         return waitNumber;
+    }
+
+    public void setWaitNumber(int waitNumber) {
+        this.waitNumber = waitNumber;
     }
 
     public ArrayList<Food> getFood() {
@@ -40,32 +38,48 @@ public class Order {
     // 주문하기
     public double takeOrder() {
         System.out.println("[ Orders ]");
-
         // 중복 값 세기
         // 중복 된 값이 있는가?
         boolean flag = false;
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        LinkedHashMap<String, Integer> nameCount = new LinkedHashMap<>();
+        LinkedHashMap<String, Double> descPrice = new LinkedHashMap<>();
+        // 맵에 넣어서 중복 제거하고 기존에 있으면 갯수 + 1
         for (Food product : this.food) {
-            Integer count = map.get(product.getFoodName());
-            if (count == null)
-                map.put(product.getFoodName(), 1);
-            else {
-                map.put(product.getFoodName(), count + 1);
+            if (nameCount.containsKey(product.getFoodName())) {
+                nameCount.replace(product.getFoodName(), (nameCount.get(product.getFoodName()) + 1));
+                descPrice.replace(product.getFoodDesc(), product.getFoodPrice());
                 flag = true;
+                continue;
+            }
+            else {
+                nameCount.put(product.getFoodName(), 1);
+                descPrice.put(product.getFoodDesc(), product.getFoodPrice());
             }
         }
+
+        System.out.println(nameCount.size() + " " + descPrice.size());
+
         // 가격 총합
         double sum = 0.0;
         // 출력
         // 중복된 값이 있으면
         if (flag) {
-            int k = 0;
-            for (String key : map.keySet()) {
-                System.out.printf("%-18s" + " | W " + this.food.get(k).getFoodPrice() + " | " + "%s개" + " | " + this.food.get(k).getFoodDesc(), key, map.get(key));
-                System.out.println();
-                // 가격 더하기 (중복 주문한 것은 곱하기 갯수)
-                sum += this.food.get(k).getFoodPrice() * map.get(key);
-                k++;
+            int first = 0;
+            for (String key : nameCount.keySet()) {
+                int second = 0;
+                for (String desc : descPrice.keySet()) {
+                    if (first == second) {
+                        System.out.printf("%-18s" + " | W " + descPrice.get(desc) + " | " + "%s개" + " | " + desc, key, nameCount.get(key));
+                        System.out.println();
+                        // 가격 더하기 (중복 주문한 것은 곱하기 갯수)
+                        sum += descPrice.get(desc) * nameCount.get(key);
+                        ++first;
+                        break;
+                    }
+                    else if (first != second) {
+                        ++second;
+                    }
+                }
             }
         }
         else {  // 중복 주문한 메뉴가 없으면
