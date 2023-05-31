@@ -53,7 +53,7 @@ public class Main {
                     "가게 전통 비법이 들어간 밀크쉐이크"
             )
     );
-    public static final ArrayList<Double> drinkPrice = new ArrayList<>(Arrays.asList(7.0, 0.9, 0.7, 0.7, 0.5));
+    public static final ArrayList<Double> drinkPrice = new ArrayList<>(Arrays.asList(2.0, 2.0, 2.0, 2.0, 3.5));
     
     // 맥주
     public static final ArrayList<String> beerName = new ArrayList<>(Arrays.asList("Majestic Pigeon", "Pierhopper IPA", "Rasplatei", "Black is beautiful", "Brooklyn Capataz"));
@@ -71,32 +71,32 @@ public class Main {
     public static void main(String[] args) {
 
         // Menu 6개 선언 및 초기화
-        Menu[] menuMain = new Menu[6];
-        for (int i = 0; i < 6; i++) {
+        Menu[] menuMain = new Menu[mainName.size()];
+        for (int i = 0; i < menuMain.length; i++) {
             menuMain[i] = new Menu(mainName.get(i), mainDesc.get(i));
         }
 
         // 버거 5개 선언 및 초기화
-        Food[] menuBurger = new Food[5];
-        for (int i = 0; i < 5; i++) {
+        Food[] menuBurger = new Food[burgerName.size()];
+        for (int i = 0; i < menuBurger.length; i++) {
             menuBurger[i] = new Food(burgerName.get(i), burgerDesc.get(i), burgerPrice.get(i));
         }
 
         // 아이스크림 5개 선언 및 초기화
-        Food[] menuIce = new Food[5];
-        for (int i = 0; i < 5; i++) {
+        Food[] menuIce = new Food[iceName.size()];
+        for (int i = 0; i < menuIce.length; i++) {
             menuIce[i] = new Food(iceName.get(i), iceDesc.get(i), icePrice.get(i));
         }
 
         // 음료 5개 선언 및 초기화
-        Food[] menuDrink = new Food[5];
-        for (int i = 0; i < 5; i++) {
+        Food[] menuDrink = new Food[drinkName.size()];
+        for (int i = 0; i < menuDrink.length; i++) {
             menuDrink[i] = new Food(drinkName.get(i), drinkDesc.get(i), drinkPrice.get(i));
         }
 
         //맥주 5개 선언 및 초기화
-        Food[] menuBeer = new Food[5];
-        for (int i = 0; i < 5; i++) {
+        Food[] menuBeer = new Food[beerName.size()];
+        for (int i = 0; i < menuBeer.length; i++) {
             menuBeer[i] = new Food(beerName.get(i), beerDesc.get(i), beerPrice.get(i));
         }
 
@@ -113,18 +113,18 @@ public class Main {
             for (int i = 0; i < menuMain.length; i++)
                 menuMain[i].printMenu(i);
             // 메뉴 선택
-            int optionChoice;
+            int optionChoice = 0;
             Scanner sc = new Scanner(System.in);
             optionChoice = sc.nextInt();
             // 어느 음식을 고를 건지 선택하는 변수
-            int choice;
+            int choice = 0;
 
             System.out.println("\"SHAKESHACK BURGER\" 에 오신걸 환영합니다.");
             System.out.println("아래 상품메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
             // 확인 or 취소
-            int flag;
+            int flag = 0;
             // single 인지 double 인지
-            int option;
+            int option = 0;
             // 더블일 때 가격 더하기 위한 변수
             double plusDouble;
             // 더블일 때를 위한 Food 객체
@@ -150,6 +150,7 @@ public class Main {
                     foodChange = new Food(burgerName.get(choice - 1), burgerDesc.get(choice - 1), burgerPrice.get(choice - 1));
                     if (option == 2) {
                         foodChange.setFoodName(burgerName.get(choice - 1) + "(Double)");
+                        foodChange.setFoodDesc(burgerDesc.get(choice - 1) + "-> 사이즈 업");
                         foodChange.setFoodPrice(burgerPrice.get(choice - 1) + plusDouble);
                     }
                     // 장바구니에 추가할지
@@ -193,6 +194,7 @@ public class Main {
                     foodChange = new Food(iceName.get(choice - 1), iceDesc.get(choice - 1), icePrice.get(choice - 1));
                     if (option == 2) {
                         foodChange.setFoodName(iceName.get(choice - 1) + "(Double)");
+                        foodChange.setFoodDesc(iceDesc.get(choice - 1) + "-> 사이즈 업");
                         foodChange.setFoodPrice(icePrice.get(choice - 1) + plusDouble);
                     }
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -233,6 +235,7 @@ public class Main {
                     foodChange = new Food(drinkName.get(choice - 1), drinkDesc.get(choice - 1), drinkPrice.get(choice - 1));
                     if (option == 2) {
                         foodChange.setFoodName(drinkName.get(choice - 1) + "(Large)");
+                        foodChange.setFoodDesc(drinkDesc.get(choice - 1) + "-> 사이즈 업");
                         foodChange.setFoodPrice(drinkPrice.get(choice - 1) + plusDouble);
                     }
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -273,6 +276,7 @@ public class Main {
                     foodChange = new Food(beerName.get(choice - 1), beerDesc.get(choice - 1), beerPrice.get(choice - 1));
                     if (option == 2) {
                         foodChange.setFoodName(beerName.get(choice - 1) + "(Large)");
+                        foodChange.setFoodDesc(beerDesc.get(choice - 1) + "-> 사이즈 업");
                         foodChange.setFoodPrice(beerPrice.get(choice - 1) + plusDouble);
                     }
                     System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -300,7 +304,8 @@ public class Main {
                     break;
                 case 5: // 주문
                     System.out.println("아래와 같이 주문 하시겠습니까?\n");
-                    totalCharge += basket.takeOrder();
+                    double temp = 0.0;
+                    temp = basket.takeOrder();
                     System.out.println("1. 주문      2. 메뉴판");
                     flag = sc.nextInt();
                     if (flag == 1) {
@@ -317,6 +322,7 @@ public class Main {
                         // 3초 sleep
                         try {
                             System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
+                            totalCharge += temp;
                             Thread.sleep(3000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -344,8 +350,8 @@ public class Main {
                     System.out.println("\n[ 총 판매금액 현황 ]");
                     System.out.printf("현재까지 총 판매된 금액은 [ W %.1f ] 입니다.\n", totalCharge);
                     System.out.println();
-                    System.out.println("돌아가기 (화면을 클릭해주세요).");
-                    flag = sc.nextInt();
+                    System.out.println("돌아가기 1.");
+                    flag = Integer.parseInt(sc.next());
                     break;
             }
         }
