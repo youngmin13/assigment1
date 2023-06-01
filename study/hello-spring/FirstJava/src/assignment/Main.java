@@ -127,7 +127,7 @@ public class Main {
             // 어느 음식을 고를 건지 선택하는 변수
             int choice = 0;
 
-            System.out.println("\"SHAKESHACK BURGER\" 에 오신걸 환영합니다.");
+            System.out.println("\n\"SHAKESHACK BURGER\" 에 오신걸 환영합니다.");
             System.out.println("아래 상품메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
             // 확인 or 취소
             int flag = 0;
@@ -208,57 +208,63 @@ public class Main {
                     flag = Integer.parseInt(sc.next());
                     break;
                 default:
-                    System.out.println("잘 못 누르셨어요!!");
                     break;
             }
         }
     }
     public static void casePrint(int optionChoice, int choice, int flag, int option, double plusDouble, Food foodChange, ArrayList<ArrayList<Food>> allFood, Order basket) {
-        for (int i = 0; i < allFood.get(optionChoice).size(); i++) {
+        for (int i = 0; i < allFood.get(optionChoice - 1).size(); i++) {
             allFood.get(optionChoice - 1).get(i).printMenu(i);
         }
+        System.out.print("선택 메뉴 : ");
         // 몇 번째 음식을 고를 것인가
         Scanner sc = new Scanner(System.in);
         choice = sc.nextInt();
         // 고른 음식 출력
         allFood.get(optionChoice - 1).get(choice - 1).printMenu(choice - 1);
         // 싱글인지 더블인지
-        System.out.println("위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
+        System.out.println("\n위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
         plusDouble = 3.6;
         System.out.printf("1. Single(W %.1f)        2. Double(W %.1f)\n",  allFood.get(optionChoice - 1).get(choice - 1).getFoodPrice(),  allFood.get(optionChoice - 1).get(choice - 1).getFoodPrice() + plusDouble);
+        System.out.print("선택 옵션 : ");
         option = sc.nextInt();
         // 임시로 사용할 새로운 Food 객체 하나 생성
-        foodChange = new Food(burgerName.get(choice - 1), burgerDesc.get(choice - 1), burgerPrice.get(choice - 1));
+        foodChange = new Food(allFood.get(optionChoice - 1).get(choice - 1).getFoodName(), allFood.get(optionChoice - 1).get(choice - 1).getFoodDesc(), allFood.get(optionChoice - 1).get(choice - 1).getFoodPrice());
         if (option == 2) {
-            foodChange.setFoodName(burgerName.get(choice - 1) + "(Double)");
-            foodChange.setFoodDesc(burgerDesc.get(choice - 1) + "-> 사이즈 업");
-            foodChange.setFoodPrice(burgerPrice.get(choice - 1) + plusDouble);
+            foodChange.setFoodName(allFood.get(optionChoice - 1).get(choice - 1).getFoodName() + "(Double)");
+            foodChange.setFoodDesc(allFood.get(optionChoice - 1).get(choice - 1).getFoodDesc() + "-> 사이즈 업");
+            foodChange.setFoodPrice(allFood.get(optionChoice - 1).get(choice - 1).getFoodPrice() + plusDouble);
         }
         // 장바구니에 추가할지
-        System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
-        System.out.println("1. 확인        2. 취소");
-        flag = sc.nextInt();
-        if (flag == 1) {
-            if (option == 1) {
-                // 기본 일때
-                basket.addFood(allFood.get(optionChoice - 1).get(choice - 1));
-                System.out.print(allFood.get(optionChoice - 1).get(choice - 1).getFoodName());
-                System.out.println("가 장바구니에 추가되었습니다.");
-            }
-            else if (option == 2) {
-                // 더블 같은 옵션이 추가 되었을 때
-                basket.addFood(foodChange);
-                System.out.print(foodChange.getFoodName());
-                System.out.println("가 장바구니에 추가되었습니다.");
-            }
-        }
-        else if (flag == 2) {
-            System.out.println("메뉴판으로 돌아갑니다.");
+        boolean takeOption = true;
+        while(takeOption) {
+            System.out.println("\n위 메뉴를 장바구니에 추가하시겠습니까?");
+            System.out.println("1. 확인        2. 취소");
+            System.out.print("선택 : ");
+            flag = sc.nextInt();
             System.out.println();
-        }
-        else {
-            System.out.println("잘 못 누르셨습니다. 1번이나 2번을 중 하나를 선택해주세요.");
-            System.out.println();
+            if (flag == 1) {
+                if (option == 1) {
+                    // 기본 일때
+                    basket.addFood(allFood.get(optionChoice - 1).get(choice - 1));
+                    System.out.print(allFood.get(optionChoice - 1).get(choice - 1).getFoodName());
+                    System.out.println("가 장바구니에 추가되었습니다.");
+                    takeOption = false;
+                } else if (option == 2) {
+                    // 더블 같은 옵션이 추가 되었을 때
+                    basket.addFood(foodChange);
+                    System.out.print(foodChange.getFoodName());
+                    System.out.println("가 장바구니에 추가되었습니다.");
+                    takeOption = false;
+                }
+            } else if (flag == 2) {
+                System.out.println("\n메뉴판으로 돌아갑니다.");
+                System.out.println();
+                takeOption = false;
+            } else {
+                System.out.println("\n잘 못 누르셨습니다. 1번이나 2번을 중 하나를 선택해주세요.");
+                System.out.println();
+            }
         }
     }
 }
