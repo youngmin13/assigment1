@@ -40,6 +40,7 @@ public class Menu {
             }
             System.out.printf( (i + 1) + ". " + "%-12s" + " | " + this.menuDesc, this.menuName);
             System.out.println();
+            if (i == 5) System.out.print("선택 메뉴 : ");
         }
     }
 }
